@@ -82,6 +82,19 @@ async function addEmployee(firstName, lastName, roleId, managerId) {
   }
 }
 
+async function updateEmployeeRole(employeeId, newRoleId) {
+  try {
+    await connection.execute("UPDATE employee SET role_id = ? WHERE id = ?", [
+      newRoleId,
+      employeeId,
+    ]);
+    console.log(`Employee role updated successfully.`);
+  } catch (error) {
+    console.error("Error updating employee role");
+    throw error;
+  }
+}
+
 module.exports = {
   viewDepartments,
   viewRoles,
@@ -89,5 +102,6 @@ module.exports = {
   addDepartment,
   addRole,
   addEmployee,
+  updateEmployeeRole,
   // Other functions...
 };
