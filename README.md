@@ -9,6 +9,7 @@ This is a project for the Upenn fullstack development bootcamp. It is a program 
 - [License](#license)
 - [Contributing](#contributing)
 - [Tests](#tests)
+- [Walkthrough](#walkthrough)
 - [Questions](#questions)
 
 ## Installation
@@ -27,6 +28,10 @@ run node index.js to get started
 
 ## License
 This project is licensed under the MIT License. [License Details](https://example.com/license/MIT)
+
+## Walkthrough
+https://www.youtube.com/watch?v=yOJ1Ya-RHNM
+
 
 ## Questions
 GitHub: [wjollie](https://github.com/wjollie)
