@@ -1,23 +1,6 @@
 // Import the connection from connection.js
 const connection = require("./connection");
 
-async function getDepartmentIdByName(name) {
-  try {
-    const [rows] = await connection.execute(
-      "SELECT id FROM department WHERE name = ?",
-      [name]
-    );
-    if (rows.length > 0) {
-      return rows[0].id;
-    } else {
-      return null; // Return null if department not found
-    }
-  } catch (error) {
-    console.error("Error getting department ID by name:", error);
-    throw error;
-  }
-}
-
 // Function to retrieve all departments
 async function viewDepartments() {
   try {
@@ -86,12 +69,25 @@ async function addRole(title, salary, departmentId) {
   }
 }
 
+async function addEmployee(firstName, lastName, roleId, managerId) {
+  try {
+    await connection.execute(
+      "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)",
+      [firstName, lastName, roleId, managerId]
+    );
+    console.log(`Employee "${firstName} ${lastName}" added successfully.`);
+  } catch (error) {
+    console.error("Error adding employee:", error);
+    throw error;
+  }
+}
+
 module.exports = {
-  getDepartmentIdByName,
   viewDepartments,
   viewRoles,
   viewEmployees,
   addDepartment,
   addRole,
+  addEmployee,
   // Other functions...
 };
