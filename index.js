@@ -4,6 +4,7 @@ const {
   viewDepartments,
   viewRoles,
   viewEmployees,
+  addDepartment,
   // Import other query functions
 } = require("./db/queries");
 const consoleTable = require("console.table");
@@ -39,6 +40,18 @@ async function startApp() {
     case "View all employees":
       const employees = await viewEmployees();
       console.table(employees);
+      break;
+    case "Add a department":
+      const departmentNamePrompt = await inquirer.prompt([
+        {
+          name: "name",
+          type: "input",
+          message: "Enter the name of the department:",
+        },
+      ]);
+
+      const departmentName = departmentNamePrompt.name; // Capture user input
+      await addDepartment(departmentName);
       break;
   }
 
