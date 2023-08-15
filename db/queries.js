@@ -95,6 +95,90 @@ async function updateEmployeeRole(employeeId, newRoleId) {
   }
 }
 
+async function updateEmployeeManager(employeeId, newManagerId) {
+  try {
+    await connection.execute(
+      "UPDATE employee SET manager_id = ? WHERE id = ?",
+      [newManagerId, employeeId]
+    );
+    console.log(`Employee manager updated successfully.`);
+  } catch (error) {
+    console.error("Error updating employee manager");
+    throw error;
+  }
+}
+
+async function getEmployeesByManager(managerId) {
+  try {
+    const [rows] = await connection.execute(
+      `SELECT * FROM employee WHERE manager_id = ?`,
+      [managerId]
+    );
+    return rows;
+  } catch (error) {
+    console.error("Error fetching employees by manager:", error);
+    throw error;
+  }
+}
+
+async function getEmployeesByDepartment(departmentId) {
+  try {
+    const [rows] = await connection.execute(
+      "SELECT * FROM employee WHERE role_id IN (SELECT id FROM role WHERE department_id = ?)",
+      [departmentId]
+    );
+    return rows;
+  } catch (error) {
+    console.error("Error retrieving employees by department:", error);
+    throw error;
+  }
+}
+
+async function deleteDepartment(departmentId) {
+  try {
+    await connection.execute("DELETE FROM department WHERE id = ?", [
+      departmentId,
+    ]);
+    console.log(`Department deleted successfully.`);
+  } catch (error) {
+    console.error("Error deleting department:", error);
+    throw error;
+  }
+}
+
+async function deleteRole(roleId) {
+  try {
+    await connection.execute("DELETE FROM role WHERE id = ?", [roleId]);
+    console.log(`Role deleted successfully.`);
+  } catch (error) {
+    console.error("Error deleting role:", error);
+    throw error;
+  }
+}
+
+async function deleteEmployee(employeeId) {
+  try {
+    await connection.execute("DELETE FROM employee WHERE id = ?", [employeeId]);
+    console.log(`Employee deleted successfully.`);
+  } catch (error) {
+    console.error("Error deleting employee:", error);
+    throw error;
+  }
+}
+
+async function getDepartmentBudget(departmentId) {
+  try {
+    const [rows] = await connection.execute(
+      "SELECT SUM(salary) AS total_budget FROM role WHERE department_id = ?",
+      [departmentId]
+    );
+    return rows[0].total_budget;
+  } catch (error) {
+    console.error("Error calculating department budget:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   viewDepartments,
   viewRoles,
@@ -103,5 +187,11 @@ module.exports = {
   addRole,
   addEmployee,
   updateEmployeeRole,
-  // Other functions...
+  updateEmployeeManager,
+  getEmployeesByManager,
+  getEmployeesByDepartment,
+  deleteDepartment,
+  deleteRole,
+  deleteEmployee,
+  getDepartmentBudget,
 };

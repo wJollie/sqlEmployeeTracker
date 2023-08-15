@@ -8,7 +8,13 @@ const {
   addRole,
   addEmployee,
   updateEmployeeRole,
-  // Import other query functions
+  updateEmployeeManager,
+  getEmployeesByManager,
+  getEmployeesByDepartment,
+  deleteDepartment,
+  deleteRole,
+  deleteEmployee,
+  getDepartmentBudget,
 } = require("./db/queries");
 const consoleTable = require("console.table");
 
@@ -27,6 +33,13 @@ async function startApp() {
         "Add a role",
         "Add an employee",
         "Update an employee role",
+        "Update an employee manager",
+        "View employees by manager",
+        "View employees by department",
+        "Delete a department",
+        "Delete a role",
+        "Delete an employee",
+        "View the total utilized budget of a department",
       ],
     },
   ]);
@@ -124,6 +137,93 @@ async function startApp() {
         employeeRoleInfo.employee_id,
         employeeRoleInfo.role_id
       );
+      break;
+    case "Update an employee manager":
+      const employeeManagerInfo = await inquirer.prompt([
+        {
+          name: "employee_id",
+          type: "input",
+          message: "Enter the ID of the employee:",
+        },
+        {
+          name: "manager_id",
+          type: "input",
+          message: "Enter the manager ID of the employee:",
+        },
+      ]);
+      await updateEmployeeManager(
+        employeeManagerInfo.employee_id,
+        employeeManagerInfo.manager_id
+      );
+      break;
+    case "View employees by manager":
+      const managerId = await inquirer.prompt([
+        {
+          name: "manager_id",
+          type: "input",
+          message: "Enter the ID of the manager:",
+        },
+      ]);
+      const employeesByManager = await getEmployeesByManager(
+        managerId.manager_id
+      );
+      console.table(employeesByManager);
+      break;
+    case "View employees by department":
+      const departmentId = await inquirer.prompt([
+        {
+          name: "department_id",
+          type: "input",
+          message: "Enter the ID of the department:",
+        },
+      ]);
+      const employeesByDepartment = await getEmployeesByDepartment(
+        departmentId.department_id
+      );
+      console.table(employeesByDepartment);
+      break;
+    case "Delete a department":
+      const departmentIdToDelete = await inquirer.prompt([
+        {
+          name: "department_id",
+          type: "input",
+          message: "Enter the ID of the department:",
+        },
+      ]);
+      await deleteDepartment(departmentIdToDelete.department_id);
+      break;
+    case "Delete a role":
+      const roleIdToDelete = await inquirer.prompt([
+        {
+          name: "role_id",
+          type: "input",
+          message: "Enter the ID of the role:",
+        },
+      ]);
+      await deleteRole(roleIdToDelete.role_id);
+      break;
+    case "Delete an employee":
+      const employeeIdToDelete = await inquirer.prompt([
+        {
+          name: "employee_id",
+          type: "input",
+          message: "Enter the ID of the employee:",
+        },
+      ]);
+      await deleteEmployee(employeeIdToDelete.employee_id);
+      break;
+    case "View the total utilized budget of a department":
+      const departmentIdToView = await inquirer.prompt([
+        {
+          name: "department_id",
+          type: "input",
+          message: "Enter the ID of the department:",
+        },
+      ]);
+      const totalBudget = await getDepartmentBudget(
+        departmentIdToView.department_id
+      );
+      console.table(totalBudget);
       break;
   }
 
