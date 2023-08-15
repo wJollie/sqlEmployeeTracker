@@ -1,12 +1,12 @@
 const inquirer = require("inquirer");
 const connection = require("./db/connection");
 const {
-  getDepartmentIdByName,
   viewDepartments,
   viewRoles,
   viewEmployees,
   addDepartment,
   addRole,
+  addEmployee,
   // Import other query functions
 } = require("./db/queries");
 const consoleTable = require("console.table");
@@ -24,7 +24,7 @@ async function startApp() {
         "View all employees",
         "Add a department",
         "Add a role",
-        "Add ab employee",
+        "Add an employee",
         "Update an employee role",
       ],
     },
@@ -74,6 +74,36 @@ async function startApp() {
         },
       ]);
       await addRole(roleInfo.title, roleInfo.salary, roleInfo.department_id);
+      break;
+    case "Add an employee":
+      const employeeInfo = await inquirer.prompt([
+        {
+          name: "first_name",
+          type: "input",
+          message: "Enter the first name of the employee:",
+        },
+        {
+          name: "last_name",
+          type: "input",
+          message: "Enter the last name of the employee:",
+        },
+        {
+          name: "role_id",
+          type: "input",
+          message: "Enter the role ID of the employee:",
+        },
+        {
+          name: "manager_id",
+          type: "input",
+          message: "Enter the manager ID of the employee:",
+        },
+      ]);
+      await addEmployee(
+        employeeInfo.first_name,
+        employeeInfo.last_name,
+        employeeInfo.role_id,
+        employeeInfo.manager_id
+      );
       break;
   }
 
