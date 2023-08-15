@@ -44,9 +44,35 @@ async function viewEmployees() {
   }
 }
 
+async function addDepartment(name) {
+  try {
+    await connection.execute("INSERT INTO department (name) VALUES (?)", [
+      name,
+    ]);
+    console.log(`Department "${name}" added successfully.`);
+  } catch (error) {
+    console.error("Error adding department:", error);
+    throw error;
+  }
+}
+
+async function addRole(title, salary, departmentId) {
+  try {
+    await connection.execute(
+      "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)",
+      [title, salary, departmentId]
+    );
+    console.log(`Role "${title}" added successfully.`);
+  } catch (error) {
+    console.error("Error adding role:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   viewDepartments,
   viewRoles,
   viewEmployees,
+  addDepartment,
   // Other functions...
 };
