@@ -7,6 +7,7 @@ const {
   addDepartment,
   addRole,
   addEmployee,
+  updateEmployeeRole,
   // Import other query functions
 } = require("./db/queries");
 const consoleTable = require("console.table");
@@ -103,6 +104,25 @@ async function startApp() {
         employeeInfo.last_name,
         employeeInfo.role_id,
         employeeInfo.manager_id
+      );
+      break;
+
+    case "Update an employee role":
+      const employeeRoleInfo = await inquirer.prompt([
+        {
+          name: "employee_id",
+          type: "input",
+          message: "Enter the ID of the employee:",
+        },
+        {
+          name: "role_id",
+          type: "input",
+          message: "Enter the role ID of the employee:",
+        },
+      ]);
+      await updateEmployeeRole(
+        employeeRoleInfo.employee_id,
+        employeeRoleInfo.role_id
       );
       break;
   }
