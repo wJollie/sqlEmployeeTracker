@@ -1,6 +1,23 @@
 // Import the connection from connection.js
 const connection = require("./connection");
 
+async function getDepartmentIdByName(name) {
+  try {
+    const [rows] = await connection.execute(
+      "SELECT id FROM department WHERE name = ?",
+      [name]
+    );
+    if (rows.length > 0) {
+      return rows[0].id;
+    } else {
+      return null; // Return null if department not found
+    }
+  } catch (error) {
+    console.error("Error getting department ID by name:", error);
+    throw error;
+  }
+}
+
 // Function to retrieve all departments
 async function viewDepartments() {
   try {
@@ -70,9 +87,11 @@ async function addRole(title, salary, departmentId) {
 }
 
 module.exports = {
+  getDepartmentIdByName,
   viewDepartments,
   viewRoles,
   viewEmployees,
   addDepartment,
+  addRole,
   // Other functions...
 };
